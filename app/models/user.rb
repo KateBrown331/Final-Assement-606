@@ -1,0 +1,42 @@
+class User < ApplicationRecord
+  # --- 1. Authentication ---
+  # This line is the magic. It requires the 'bcrypt' gem.
+  # It automatically adds methods to set and authenticate a password.
+  # It hashes the password and stores it in the 'password_digest' column.
+  # [Image of has_secure_password logic flow diagram]
+  has_secure_password
+
+  # --- 2. Email Verification ---
+  # This tells Rails to auto-generate a token for the
+  # 'tamu_verification_token' column.
+  has_secure_token :tamu_verification_token
+
+  # --- 3. Table Relationships ---
+  # A user (as a poster) can have many posts.
+  # If a user is deleted, all their posts are also deleted.
+  has_many :referral_posts, dependent: :destroy
+
+  # A user (as a requester) can have many requests.
+  # If a user is deleted, all their requests are also deleted.
+  has_many :referral_requests, dependent: :destroy
+
+  # A user can have many company verification records.
+  # If a user is deleted, all their verifications are also deleted.
+  has_many :company_verifications, dependent: :destroy
+
+  # --- 4. Validations ---
+  # Ensures the email is present, unique, and ends with @tamu.edu
+  validates :email, presence: true,
+                    uniqueness: true,
+                    format: { with: /\A(.+)@tamu\.edu\z/i, message: "must be a valid @tamu.edu email" }
+
+  # These are optional but good to have.
+  validates :first_name, presence: true, on: :create, allow_blank: true
+  validates :last_name, presence: true, on: :create, allow_blank: true
+
+  # --- 5. Helper Methods ---
+  # A simple method to get the user's full name, e.g., "Khussal Pradh"
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+end
