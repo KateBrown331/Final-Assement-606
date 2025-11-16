@@ -1,5 +1,4 @@
 class UsersController < ApplicationController
-  before_action :redirect_if_logged_in, only: [:new, :create]
   def new
     @user = User.new
   end
@@ -10,13 +9,14 @@ class UsersController < ApplicationController
       session[:user_id] = @user.id
       redirect_to profile_path, notice: 'Account created successfully!'
     else
+      # Collect all errors and display as flash alert
+      flash.now[:alert] = @user.errors.full_messages.join(", ")
       render :new
     end
   end
 
   def show
     @user = current_user
-    redirect_to login_path, alert: 'Please log in first' unless @user
   end
 
   private

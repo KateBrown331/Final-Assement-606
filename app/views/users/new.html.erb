@@ -4,23 +4,43 @@
   <p>
     <%= f.label :first_name %><br>
     <%= f.text_field :first_name %>
+    <% if @user.errors[:first_name].any? %>
+      <div class="field-error"><%= @user.errors[:first_name].join(", ") %></div>
+    <% end %>
   </p>
+
   <p>
     <%= f.label :last_name %><br>
     <%= f.text_field :last_name %>
+    <% if @user.errors[:last_name].any? %>
+      <div class="field-error"><%= @user.errors[:last_name].join(", ") %></div>
+    <% end %>
   </p>
+
   <p>
     <%= f.label :email %><br>
     <%= f.email_field :email %>
+    <% if @user.errors[:email].any? %>
+      <div class="field-error"><%= @user.errors[:email].join(", ") %></div>
+    <% end %>
   </p>
+
   <p>
     <%= f.label :password %><br>
     <%= f.password_field :password %>
+    <% if @user.errors[:password].any? %>
+      <div class="field-error"><%= @user.errors[:password].join(", ") %></div>
+    <% end %>
   </p>
+
   <p>
     <%= f.label :password_confirmation %><br>
     <%= f.password_field :password_confirmation %>
+    <% if @user.errors[:password_confirmation].any? %>
+      <div class="field-error"><%= @user.errors[:password_confirmation].join(", ") %></div>
+    <% end %>
   </p>
+
   <p>
     <%= f.submit "Sign Up" %>
   </p>

@@ -4,11 +4,17 @@
   <div>
     <%= f.label :email %>
     <%= f.email_field :email, required: true %>
+    <% if @login_error %>
+      <div class="field-error"><%= @login_error %></div>
+    <% end %>
   </div>
 
   <div>
     <%= f.label :password %>
     <%= f.password_field :password, required: true %>
+    <% if @login_error %>
+      <div class="field-error"><%= @login_error %></div>
+    <% end %>
   </div>
 
   <div>
