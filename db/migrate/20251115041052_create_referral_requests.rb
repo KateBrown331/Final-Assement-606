@@ -6,7 +6,7 @@ class CreateReferralRequests < ActiveRecord::Migration[7.1]
 
       t.text :note_to_poster # General message
 
-      t.jsonb :submitted_data, default: {}
+      t.json :submitted_data, default: {}
 
       # For Rails enum: status: { pending: 0, approved: 1, rejected: 2, withdrawn: 3 }
       t.integer :status, default: 0, null: false

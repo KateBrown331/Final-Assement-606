@@ -1,0 +1,6 @@
+<h1>Profile</h1>
+
+<p><strong>Full Name:</strong> <%= @user.full_name %></p>
+<p><strong>Email:</strong> <%= @user.email %></p>
+
+<%= link_to "Log Out", logout_path, method: :delete %>

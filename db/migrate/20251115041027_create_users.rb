@@ -20,8 +20,8 @@ class CreateUsers < ActiveRecord::Migration[7.1]
       t.string :github_url
 
       # --- Merged Experiences & Educations ---
-      t.jsonb :experiences_data, null: false, default: []
-      t.jsonb :educations_data, null: false, default: []
+      t.json :experiences_data, null: false, default: []
+      t.json :educations_data, null: false, default: []
 
       t.timestamps
     end
