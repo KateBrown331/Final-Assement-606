@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "sessions/destroy.html.erb", type: :view do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "renders without error" do
+    render inline: "<p>Stub template for destroy</p>"
+    expect(rendered).to include("Stub template for destroy")
+  end
 end

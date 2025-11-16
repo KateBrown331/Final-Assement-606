@@ -36,4 +36,14 @@ RSpec.describe User, type: :model do
     subject.last_name = 'Last'
     expect(subject.full_name).to eq('First Last')
   end
+
+  it "has a full_name method" do
+    u = User.new(first_name: "First", last_name: "Last")
+    expect(u.full_name).to eq("First Last")
+  end
+
+  it "requires email" do
+    u = User.new(password: "password")
+    expect(u).to_not be_valid
+  end
 end

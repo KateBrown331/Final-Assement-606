@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  before_action :require_login
   helper_method :current_user, :logged_in?
 
   private
@@ -12,7 +13,8 @@ class ApplicationController < ActionController::Base
   end
 
   def require_login
-    unless logged_in?
+    allowed_paths = [ login_path, new_user_path ]
+    unless logged_in? || allowed_paths.include?(request.path)
       flash[:error] = "You must be logged in to access this section"
       redirect_to login_path
     end

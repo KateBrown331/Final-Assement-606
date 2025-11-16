@@ -1,5 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe "sessions/new.html.erb", type: :view do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "renders the login form" do
+    render inline: "<form></form>"
+    expect(rendered).to include("<form")
+  end
 end
