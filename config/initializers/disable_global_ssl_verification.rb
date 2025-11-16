@@ -12,12 +12,15 @@ rescue => e
   warn "disable_global_ssl_verification: failed to configure OpenSSL defaults: #{e.class}: #{e.message}"
 end
 
+
+# Unessecary
 # Also apply to ActionMailer SMTP settings so mail delivery libraries honor it.
-begin
-  if defined?(ActionMailer::Base)
-    ActionMailer::Base.smtp_settings ||= {}
-    ActionMailer::Base.smtp_settings[:openssl_verify_mode] = "none"
-  end
-rescue => e
-  warn "disable_global_ssl_verification: failed to set ActionMailer smtp_settings: #{e.class}: #{e.message}"
-end
+# This is now handled in config/environments/development.rb via the MAILTRAP_INSECURE env variable
+# begin
+#   if defined?(ActionMailer::Base)
+#     ActionMailer::Base.smtp_settings ||= {}
+#     ActionMailer::Base.smtp_settings[:openssl_verify_mode] = "none"
+#   end
+# rescue => e
+#   warn "disable_global_ssl_verification: failed to set ActionMailer smtp_settings: #{e.class}: #{e.message}"
+# end
