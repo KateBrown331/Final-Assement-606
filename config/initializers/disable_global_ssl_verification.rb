@@ -3,7 +3,7 @@ Rails.application.config.after_initialize do
     begin
       if defined?(ActionMailer::Base)
         ActionMailer::Base.smtp_settings ||= {}
-        ActionMailer::Base.smtp_settings[:openssl_verify_mode] = 'none'
+        ActionMailer::Base.smtp_settings[:openssl_verify_mode] = "none"
       end
     rescue => e
       warn "disable_global_ssl_verification: failed to set ActionMailer smtp_settings: #{e.class}: #{e.message}"
