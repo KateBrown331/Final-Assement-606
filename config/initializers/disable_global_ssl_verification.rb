@@ -1,26 +1,16 @@
-# This initializer attempts two things:
-# 1) Set OpenSSL's SSLContext default params to not verify peer certificates.
-# 2) Ensure Action Mailer uses an 'openssl_verify_mode' of 'none' for SMTP.
+Rails.application.config.after_initialize do
+  if Rails.env.development?
+    begin
+      config_am = Rails.application.config.action_mailer
+      if config_am.nil?
+        Rails.application.config.action_mailer = ActiveSupport::OrderedOptions.new
+        config_am = Rails.application.config.action_mailer
+      end
 
-begin
-  require "openssl"
-
-  if defined?(OpenSSL::SSL::SSLContext) && OpenSSL::SSL::SSLContext.const_defined?(:DEFAULT_PARAMS)
-    OpenSSL::SSL::SSLContext::DEFAULT_PARAMS.merge!(verify_mode: OpenSSL::SSL::VERIFY_NONE)
+      config_am.smtp_settings ||= {}
+      config_am.smtp_settings[:openssl_verify_mode] = "none"
+    rescue => e
+      warn "disable_global_ssl_verification: failed to set ActionMailer smtp_settings: #{e.class}: #{e.message}"
+    end
   end
-rescue => e
-  warn "disable_global_ssl_verification: failed to configure OpenSSL defaults: #{e.class}: #{e.message}"
 end
-
-
-# Unessecary
-# Also apply to ActionMailer SMTP settings so mail delivery libraries honor it.
-# This is now handled in config/environments/development.rb via the MAILTRAP_INSECURE env variable
-# begin
-#   if defined?(ActionMailer::Base)
-#     ActionMailer::Base.smtp_settings ||= {}
-#     ActionMailer::Base.smtp_settings[:openssl_verify_mode] = "none"
-#   end
-# rescue => e
-#   warn "disable_global_ssl_verification: failed to set ActionMailer smtp_settings: #{e.class}: #{e.message}"
-# end

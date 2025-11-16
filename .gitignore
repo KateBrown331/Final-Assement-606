@@ -36,4 +36,7 @@
 # SimpleCov coverage report
 coverage/
 
-/config/credentials/development.key
+
+
+# Ignore encrypted per-environment credentials in development
+/config/credentials/

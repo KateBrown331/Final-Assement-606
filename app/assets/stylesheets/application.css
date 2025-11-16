@@ -8,3 +8,8 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+.field-error {
+  color: red;
+  font-size: 0.9em;
+  margin-top: 2px;
+}

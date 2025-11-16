@@ -30,9 +30,12 @@ class User < ApplicationRecord
                     uniqueness: true,
                     format: { with: /\A(.+)@tamu\.edu\z/i, message: "must be a valid @tamu.edu email" }
 
+  # Password validation for security
+  validates :password, presence: true, length: { minimum: 6 }
+
   # These are optional but good to have.
-  validates :first_name, presence: true, on: :create, allow_blank: true
-  validates :last_name, presence: true, on: :create, allow_blank: true
+  validates :first_name, presence: true, allow_blank: true
+  validates :last_name, presence: true, allow_blank: true
 
   # --- 5. Helper Methods ---
   # A simple method to get the user's full name, e.g., "Khussal Pradh"
