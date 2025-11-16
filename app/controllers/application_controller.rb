@@ -17,4 +17,8 @@ class ApplicationController < ActionController::Base
       redirect_to login_path
     end
   end
+
+  def redirect_if_logged_in
+    redirect_to profile_path, notice: "You are already logged in" if logged_in?
+  end
 end

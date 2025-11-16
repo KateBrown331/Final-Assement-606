@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get '/login', to: 'sessions#new'
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
+  get '/logout', to: 'sessions#destroy'
 
   # Current user profile
   get '/profile', to: 'users#show'
@@ -22,4 +23,6 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "users#new"
+  # Catches all undefined routes and route errors, don't put anything below this line
+  match '*unmatched', to: 'redirect#fallback', via: :all
 end
