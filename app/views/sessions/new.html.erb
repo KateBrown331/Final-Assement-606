@@ -1,0 +1,25 @@
+<h1>Log In</h1>
+
+<%= form_with model: User.new, url: login_path, local: true, data: { turbo: false } do |f| %>
+  <div>
+    <%= f.label :email %>
+    <%= f.email_field :email, required: true %>
+    <% if @login_error %>
+      <div class="field-error"><%= @login_error %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.label :password %>
+    <%= f.password_field :password, required: true %>
+    <% if @login_error %>
+      <div class="field-error"><%= @login_error %></div>
+    <% end %>
+  </div>
+
+  <div>
+    <%= f.submit "Login" %>
+  </div>
+<% end %>
+
+<%= link_to "Sign Up", new_user_path %>

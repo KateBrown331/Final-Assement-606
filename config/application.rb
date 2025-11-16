@@ -1,27 +1,24 @@
 require_relative "boot"
 
 require "rails/all"
-
-if ENV["RAILS_ENV"] == "development" || ENV["RACK_ENV"] == "development"
-  begin
-    if defined?(ActionMailer::Base)
-      ActionMailer::Base.singleton_class.class_eval do
-        unless method_defined?(:preview_path=) || respond_to?(:preview_path=)
-          define_method(:preview_path=) do |path|
-            self.preview_paths = Array(path)
-          end
+begin
+  if defined?(ActionMailer) && defined?(ActionMailer::Base)
+    ActionMailer::Base.singleton_class.class_eval do
+      unless method_defined?(:preview_path=)
+        define_method(:preview_path=) do |path|
+          self.preview_paths = Array(path)
         end
+      end
 
-        unless method_defined?(:preview_path) || respond_to?(:preview_path)
-          define_method(:preview_path) do
-            Array(self.preview_paths).first
-          end
+      unless method_defined?(:preview_path)
+        define_method(:preview_path) do
+          Array(self.preview_paths).first
         end
       end
     end
-  rescue => e
-    warn "action_mailer preview shim failed: #{e.class}: #{e.message}"
   end
+rescue => e
+  warn "action_mailer_preview_compat early shim failed: #{e.class}: #{e.message}"
 end
 
 # Require the gems listed in Gemfile, including any gems
