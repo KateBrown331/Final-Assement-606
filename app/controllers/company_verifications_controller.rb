@@ -9,15 +9,19 @@ class CompanyVerificationsController < ApplicationController
     @company_verification = current_user.company_verifications.build(company_verification_params)
 
     unless domain_matches_company?(@company_verification)
-      @company_verification.errors.add(:company_email, "must use your company domain (e.g., name@company.com)")
-      return render :new
+      flash.now[:error] = "Your email domain must match the company name."
+      render :new and return
     end
 
     if @company_verification.save
-      CompanyVerificationMailer.verify_email(@company_verification).deliver_later
-      redirect_to @company_verification, notice: "A verification email has been sent to your company email."
+        flash[:error] = "Cannot send verification email at this time. Please try again later."
+        redirect_to user_path(current_user) and return
+    #   CompanyVerificationMailer.verify_email(@company_verification).deliver_later
+    #   redirect_to @company_verification, notice: "A verification email has been sent to your company email."
     else
-      render :new
+      puts @company_verification.errors.full_messages
+      flash[:error] = "Failed to create company verification."
+      redirect_to user_path(current_user) and return
     end
   end
 
@@ -26,14 +30,15 @@ class CompanyVerificationsController < ApplicationController
   end
 
   def verify
-    verification = CompanyVerification.find(params[:id])
+    # Needs to be implemented
+    # verification = CompanyVerification.find(params[:id])
 
-    if verification.verification_token == params[:token]
-      verification.update(is_verified: true, verified_at: Time.current)
-      redirect_to user_path(verification.user), notice: "Company email successfully verified!"
-    else
-      redirect_to root_path, alert: "Invalid or expired verification link."
-    end
+    # if verification.verification_token == params[:token]
+    #   verification.update(is_verified: true, verified_at: Time.current)
+    #   redirect_to user_path(verification.user), notice: "Company email successfully verified!"
+    # else
+    #   redirect_to root_path, alert: "Invalid or expired verification link."
+    # end
   end
 
   private
