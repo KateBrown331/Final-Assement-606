@@ -82,3 +82,49 @@ Then("I should see the homepage") do
   expect(page).to have_current_path(new_session_path)
   expect(page).to have_content("Log In")
 end
+
+When("I forget to fill in signup information") do
+  fill_in "First name", with: ""
+  fill_in "Last name", with: ""
+  fill_in "Email", with: ""
+  fill_in "Password", with: ""
+  fill_in "Password confirmation", with: ""
+end
+
+Then("I should see the signup page") do
+  expect(page).to have_current_path(users_path)
+  expect(page).to have_content("Sign Up")
+end
+
+Then("I should see a can't be blank signup warning") do
+  expect(page).to have_content("can't be blank")
+end
+
+Given("I am not logged in") do
+  page.driver.submit :delete, session_path, {}
+end
+
+When("I visit a non-existent page") do
+  visit "/some-totally-fake-route-#{SecureRandom.hex(4)}"
+end
+
+Then("I should be redirected to the login page") do
+  expect(page.current_path).to eq(new_session_path)
+end
+
+Then('I should see {string}') do |test|
+  expect(page).to have_content(test)
+end
+
+When("I fill in invalid login credentials") do
+  fill_in "Email", with: "invalid-email"
+  fill_in "Password", with: "invalid-password"
+end
+
+When("I visit {string}") do |path|
+  visit path
+end
+
+Then("I should be redirected to my profile page") do
+  expect(page.current_path).to eq(user_path(@user))
+end
