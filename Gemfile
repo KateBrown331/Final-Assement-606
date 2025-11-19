@@ -36,9 +36,8 @@ gem "kamal", require: false
 gem "thruster", require: false
 
 ### Asset Pipeline Stuff ###
-# Tailwind for Rails
-gem "tailwindcss-rails", "~> 4.4"
-# Switch rails back to sprockets to prevent having to load asset pipeline
+gem "bootstrap", "~> 5.3"
+gem "sassc-rails"
 gem "sprockets-rails"
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]

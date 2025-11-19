@@ -19,15 +19,30 @@
 
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "tamu-theme", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
 
   <body>
     <% flash.each do |key, message| %>
-      <div class="flash <%= key %>" style="padding: 10px; margin: 10px; border: 1px solid #ccc; background: #f0f0f0;">
+      <% bootstrap_class =
+          case key.to_sym
+          when :notice then "text-success border-success"
+          when :alert  then "text-danger border-danger"
+          else "text-secondary border-secondary"
+          end
+      %>
+
+      <div class="position-fixed top-0 start-50 translate-middle-x mt-3 
+                  bg-white border rounded-3 shadow-lg px-4 py-3 
+                  z-3 <%= bootstrap_class %>" 
+          style="max-width: 450px; width: 90%;">
         <%= message %>
       </div>
     <% end %>
+
+
+
     <%= yield %>
   </body>
 </html>
