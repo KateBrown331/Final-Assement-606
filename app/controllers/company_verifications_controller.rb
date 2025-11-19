@@ -1,8 +1,8 @@
 class CompanyVerificationsController < ApplicationController
-  before_action :require_login
-
   def new
     @company_verification = CompanyVerification.new
+    @company_verification.company_name = params[:company_name] if params[:company_name].present?
+
   end
 
   def create
@@ -25,20 +25,30 @@ class CompanyVerificationsController < ApplicationController
     end
   end
 
-  def show
-    @company_verification = CompanyVerification.find(params[:id])
+  def verify
+    verification = CompanyVerification.find(params[:id])
+
+    if verification.verification_token == params[:token]
+      verification.update(is_verified: true, verified_at: Time.current)
+      redirect_to user_path(verification.user), notice: "Company email successfully verified!"
+    else
+      redirect_to root_path, alert: "Invalid or expired verification link."
+    end
   end
 
-  def verify
-    # Needs to be implemented
-    # verification = CompanyVerification.find(params[:id])
+  def index
+    # Get all verifications for current user
+    all_verifications = current_user.company_verifications.order(created_at: :desc)
 
-    # if verification.verification_token == params[:token]
-    #   verification.update(is_verified: true, verified_at: Time.current)
-    #   redirect_to user_path(verification.user), notice: "Company email successfully verified!"
-    # else
-    #   redirect_to root_path, alert: "Invalid or expired verification link."
-    # end
+    # Separate verified vs pending
+    @verified_verifications = all_verifications.select(&:is_verified)
+    @pending_verifications  = all_verifications.reject(&:is_verified)
+  end
+
+  def destroy
+    @company_verification = current_user.company_verifications.find(params[:id])
+    @company_verification.destroy
+    redirect_to company_verifications_path, notice: "Verification request deleted."
   end
 
   private

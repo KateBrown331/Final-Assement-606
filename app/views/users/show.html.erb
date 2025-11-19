@@ -42,6 +42,21 @@
                   <p class="mb-1"><strong>Resume:</strong> <a href="<%= @user.resume_url %>" target="_blank" class="text-tamu-maroon hover:underline">View</a></p>
                 <% end %>
               </div>
+              <div class="card rounded-md p-3 border-tamu-gray-300 mt-4">
+                <h5 class="font-bold mb-2">Verified Companies</h5>
+                <% if @verified_companies.any? %>
+                  <ul class="list-group list-group-flush">
+                    <% @verified_companies.each do |cv| %>
+                      <li class="list-group-item d-flex justify-content-between align-items-center border-tamu-gray-200">
+                        <span><%= cv.company_name %></span>
+                        <span class="text-success fw-semibold">Verified ✔️</span>
+                      </li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  <p class="text-tamu-gray-700 mb-0">No verified companies yet.</p>
+                <% end %>
+              </div>
             </div>
 
             <!-- Main Content -->
@@ -71,9 +86,20 @@
                       <div class="d-flex flex-column align-items-end">
                         <% if logged_in? && current_user == @user %>
                           <%= link_to "Edit", edit_experience_user_path(@user, index: index), class: "tamu-btn btn-outline-maroon" %>
-                          <% if exp["end_date"].blank? %>
+
+                          <% status = verification_status_for(@user_verifications, exp["company"]) %>
+
+                          <% if status == :none %>
                             <div class="mt-2">
-                              <%= link_to "Verify", new_company_verification_path, class: "btn-outline-green fs-6 tamu-btn" %>
+                              <%= link_to "Verify", new_company_verification_path(company_name: exp["company"]), class: "btn-outline-green fs-6 tamu-btn" %>
+                            </div>
+                          <% elsif status == :pending %>
+                            <div class="mt-2">
+                              <span class="text-warning fw-semibold fs-6">Pending</span>
+                            </div>
+                          <% elsif status == :verified %>
+                            <div class="mt-2">
+                              <span class="text-success fw-semibold fs-6">Verified ✔️</span>
                             </div>
                           <% end %>
                         <% end %>

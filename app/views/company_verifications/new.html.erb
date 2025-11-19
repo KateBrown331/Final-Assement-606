@@ -11,7 +11,7 @@
       <!-- Company Name -->
       <div class="mb-3">
         <%= f.label :company_name, "Company Name", class: "form-label fw-semibold" %>
-        <%= f.text_field :company_name, class: "form-control", required: true, placeholder: "Ex: Google, ExxonMobil, etc." %>
+        <%= f.text_field :company_name, class: "form-control", required: true, placeholder: "Ex: Google, ExxonMobil, etc.", value: @company_verification.company_name %>
       </div>
 
       <!-- Company Email -->
@@ -19,7 +19,7 @@
         <%= f.label :company_email, "Company Email", class: "form-label fw-semibold" %>
         <%= f.email_field :company_email, 
               class: "form-control",
-              placeholder: "yourname@company.com",
+              placeholder: "yourname@" + (@company_verification.company_name.blank? ? "company.com" : company_name_to_domain(@company_verification.company_name)),
               required: true %>
       </div>
 
@@ -29,7 +29,7 @@
           ✔ Your email domain must match the company name
         </p>
         <p class="text-tamu-gray-600 mb-0" style="font-size: 0.9rem;">
-          Example: If your company name is <strong>Google</strong>, your email should end with <code>@google.com</code>.
+          Example: If your company name is <strong><%= @company_verification.company_name.presence || "Google" %></strong>, your email should end with <code>@<%= (@company_verification.company_name.blank? ? "google.com" : company_name_to_domain(@company_verification.company_name)) %></code>.
         </p>
       </div>
 

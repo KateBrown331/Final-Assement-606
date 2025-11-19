@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   # Company Verification GET /company_verifications/new (company_verifications#new),
   # POST /company_verifications (company_verifications#create), GET /company_verifications/:id (company_verifications#show)
-  resources :company_verifications, only: [:new, :create, :show] do
+  resources :company_verifications, only: [:new, :create, :index, :destroy] do
     member do
       get :verify   # e.g. /company_verifications/12/verify?token=xxx
     end

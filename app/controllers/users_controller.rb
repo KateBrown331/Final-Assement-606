@@ -21,6 +21,9 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @user.reload
+
+    @user_verifications = current_user.company_verifications.index_by { |cv| cv.company_name.downcase.strip }
+    @verified_companies = current_user.company_verifications.where(is_verified: true)
   end
 
   def edit
