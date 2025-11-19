@@ -1,6 +1,20 @@
 Rails.application.routes.draw do
   # Creates: POST /users (users#create), GET /users/new (users#new), GET /users/:id (users#show), 
-  resources :users, only: [ :new, :create, :show ]
+  resources :users, only: [ :new, :create, :show, :edit, :update ] do
+    member do
+      get :add_experience
+      post :create_experience
+
+      get  'edit_experience/:index', to: 'users#edit_experience', as: :edit_experience
+      patch 'update_experience/:index', to: 'users#update_experience', as: :update_experience
+
+      get :add_education
+      post :create_education
+
+      get  'edit_education/:index', to: 'users#edit_education', as: :edit_education
+      patch 'update_education/:index', to: 'users#update_education', as: :update_education
+    end
+  end
   # Creates: GET /session/new (sessions#new), POST /session (sessions#create), DELETE /session (sessions#destroy)
   resource :session, only: [ :new, :create, :destroy ]
 
