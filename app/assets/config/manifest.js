@@ -3,5 +3,4 @@
 //= link_tree ../../javascript .js
 
 //= link application.css
-//= link tailwind.css
 //= link tamu-theme.css
