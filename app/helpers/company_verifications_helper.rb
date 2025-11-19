@@ -1,0 +1,2 @@
+module CompanyVerificationsHelper
+end

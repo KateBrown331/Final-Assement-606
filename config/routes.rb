@@ -18,6 +18,14 @@ Rails.application.routes.draw do
   # Creates: GET /session/new (sessions#new), POST /session (sessions#create), DELETE /session (sessions#destroy)
   resource :session, only: [ :new, :create, :destroy ]
 
+  # Company Verification GET /company_verifications/new (company_verifications#new),
+  # POST /company_verifications (company_verifications#create), GET /company_verifications/:id (company_verifications#show)
+  resources :company_verifications, only: [:new, :create, :show] do
+    member do
+      get :verify   # e.g. /company_verifications/12/verify?token=xxx
+    end
+  end
+
   # Login/logout
   # get "/login", to: "sessions#new"
   # post "/login", to: "sessions#create"

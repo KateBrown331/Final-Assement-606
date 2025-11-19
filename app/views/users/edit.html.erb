@@ -54,15 +54,15 @@
           </div>
             <div class="mb-3">
               <%= f.label :resume_url, "Resume URL", class: "form-label fw-semibold" %>
-              <%= f.url_field :resume_url, class: "form-control" %>
+              <%= f.url_field :resume_url, class: "form-control", placeholder: "https://example.com/resume.pdf" %>
           </div>
          <div class="mb-3">
               <%= f.label :linkedin_url, "LinkedIn URL", class: "form-label fw-semibold" %>
-              <%= f.url_field :linkedin_url, class: "form-control" %>
+              <%= f.url_field :linkedin_url, class: "form-control", placeholder: "https://linkedin.com/in/username" %>
           </div>
           <div class="mb-3">
               <%= f.label :github_url, "GitHub URL", class: "form-label fw-semibold" %>
-              <%= f.url_field :github_url, class: "form-control" %>
+              <%= f.url_field :github_url, class: "form-control", placeholder: "https://github.com/username" %>
           </div>
 
           <div class="mt-5 border border-gray-100 rounded-3 px-4 pb-4 pt-2">
@@ -84,7 +84,7 @@
                   <p class="text-tamu-gray-700">No experiences added yet.</p>
               <% end %>
             </ul>
-            <%= link_to "Add Experience", add_experience_user_path(@user), class: "tamu-btn tamu-btn-maroon me-2" %>
+            <%= link_to "Add Experience", add_experience_user_path(@user), class: "tamu-btn tamu-btn-maroon text-decoration-none me-2" %>
           </div>
 
           <div class="mt-5 border border-gray-100 rounded-3 px-4 pb-4 pt-2">
@@ -106,7 +106,7 @@
                 <p class="text-tamu-gray-700">No education added yet.</p>
             <% end %>
             </ul>
-            <%= link_to "Add Education", add_education_user_path(@user), class: "tamu-btn tamu-btn-maroon" %>
+            <%= link_to "Add Education", add_education_user_path(@user), class: "tamu-btn tamu-btn-maroon text-decoration-none" %>
           </div>
 
           <% if @user.is_tamu_verified %>
