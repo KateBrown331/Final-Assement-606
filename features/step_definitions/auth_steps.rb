@@ -23,7 +23,7 @@ Then("I should see a welcome message") do
   # After successful signup, user is logged in and redirected to profile
   expect(page).to have_content("Account created successfully!")
   expect(page).to have_content("Profile")
-  expect(page).to have_content("Full Name: Test User")
+  expect(page).to have_content("Test User")
   expect(page).to have_content("Email: test_user@tamu.edu")
 end
 
@@ -39,7 +39,7 @@ Given("I have an account") do
 end
 
 Given("I am on the login page") do
-  visit login_path
+  visit new_session_path
 end
 
 When("I fill in valid login credentials") do
@@ -48,9 +48,11 @@ When("I fill in valid login credentials") do
 end
 
 Then("I should see my profile page") do
-  expect(page).to have_content("Profile")
-  expect(page).to have_content("Full Name: Test User")
+  expect(page).to have_content("Test User")
   expect(page).to have_content("Email: #{@user.email}")
+  expect(page).to have_content("Summary")
+  expect(page).to have_content("Experiences")
+  expect(page).to have_content("Education")
 end
 
 Given("I am logged in") do
@@ -61,22 +63,22 @@ Given("I am logged in") do
     password: "password",
     password_confirmation: "password"
   )
-  visit login_path
+  visit new_session_path
   fill_in "Email", with: @user.email
   fill_in "Password", with: "password"
   click_button "Login"
 
-  # Ensure the profile page loaded and logout link exists
-  expect(page).to have_content("Profile")
-  expect(page).to have_link("Log Out")
+  # Ensure the profile page loaded and logout button exists
+  expect(page).to have_content("Test User")
+  expect(page).to have_button("Log Out")
 end
 
 When("I click logout") do
-  click_link "Log Out"
+  click_button('Log Out', match: :first)
 end
 
 Then("I should see the homepage") do
   # After logout, the app redirects to login page, not root
-  expect(page).to have_current_path(login_path)
+  expect(page).to have_current_path(new_session_path)
   expect(page).to have_content("Log In")
 end
