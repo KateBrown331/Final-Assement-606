@@ -13,10 +13,6 @@ When("I fill in the profile form with:") do |table|
   end
 end
 
-When("I fill in {string} with {string}") do |field, value|
-  fill_in field, with: value
-end
-
 When("I press {string}") do |button|
   click_button button
 end

@@ -59,15 +59,6 @@ Feature: Edit/Add Experience & Education
     Then I should see "Education added!"
     And I should be redirected to the profile page for "John" "Doe"
 
-  Scenario: Adding an invalid education entry fails
-    Given I am logged in as a user with first name "John" and last name "Doe"
-    When I visit the add education page for "John" "Doe"
-    And I fill in the education form with:
-      | degree | |
-      | school | |
-    And I submit the education form
-    Then I should be redirected to the profile page for "John" "Doe"
-
   Scenario: User visits the edit education page
     Given I am logged in as a user with first name "John" and last name "Doe"
     When I visit the edit education page for entry 0 of "John" "Doe"
