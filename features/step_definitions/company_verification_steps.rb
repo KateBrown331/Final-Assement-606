@@ -16,7 +16,7 @@ When("I click {string} within the {string} experience section") do |link_text, c
   # Find the experience card that contains the company name
   # We use match: :first to pick the first one if duplicates exist, or refine by title if needed
   experience_div = find(:xpath, "(//div[contains(., '#{company_name}')][contains(@class, 'border-tamu-gray-300')])[1]")
-  
+
   within(experience_div) do
     click_link link_text
   end

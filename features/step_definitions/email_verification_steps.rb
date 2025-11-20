@@ -29,7 +29,7 @@ end
 Given("a company verification exists for {string} with token {string}") do |company_name, token|
   # Ensure we have a user to attach this to
   step "I am logged in" unless @user
-  
+
   @cv = @user.company_verifications.create!(
     company_name: company_name,
     company_email: "test@#{company_name.downcase}.com",

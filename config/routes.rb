@@ -56,8 +56,8 @@ Rails.application.routes.draw do
 
 
   # Email Verification Routes
-  get '/verify_tamu', to: 'email_verifications#verify_tamu'
-  get '/verify_company', to: 'email_verifications#verify_company'
+  get "/verify_tamu", to: "email_verifications#verify_tamu"
+  get "/verify_company", to: "email_verifications#verify_company"
 
   # Test routes - only in test environment
   if Rails.env.test?

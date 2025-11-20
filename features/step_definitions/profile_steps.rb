@@ -11,21 +11,21 @@ When("I fill in {string} with {string}") do |field, value|
 end
 
 Given("I have an existing experience") do
-  @user.experiences_data << { 
-    "title" => "Junior Dev", 
-    "company" => "Startup", 
-    "start_date" => "2018-01-01", 
-    "end_date" => "2019-01-01" 
+  @user.experiences_data << {
+    "title" => "Junior Dev",
+    "company" => "Startup",
+    "start_date" => "2018-01-01",
+    "end_date" => "2019-01-01"
   }
   @user.save!
 end
 
 Given("I have an existing education") do
-  @user.educations_data << { 
-    "degree" => "BA", 
-    "school" => "University", 
-    "start_date" => "2012-09-01", 
-    "end_date" => "2016-05-01" 
+  @user.educations_data << {
+    "degree" => "BA",
+    "school" => "University",
+    "start_date" => "2012-09-01",
+    "end_date" => "2016-05-01"
   }
   @user.save!
 end

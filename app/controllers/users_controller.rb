@@ -57,7 +57,7 @@ class UsersController < ApplicationController
     redirect_to user_path(@user), alert: "Unauthorized" unless current_user == @user
 
     exp = params.require(:experience).permit(:title, :company, :start_date, :end_date, :description).to_h
-    
+
     if exp["title"].blank? || exp["company"].blank? || exp["start_date"].blank?
       flash.now[:error] = "Failed to add experience."
       render :add_experience
@@ -105,8 +105,9 @@ class UsersController < ApplicationController
     redirect_to user_path(@user), alert: "Unauthorized" unless current_user == @user
 
     edu = params.require(:education).permit(:degree, :school, :start_date, :end_date, :description).to_h
-    
-    if edu["degree"].blank? || edu["school"].blank? || edu["start_date"].blank?
+
+    # Require degree and school for now; start_date is optional in the UI/tests
+    if edu["degree"].blank? || edu["school"].blank?
       flash.now[:error] = "Failed to add education."
       render :add_education
       return
