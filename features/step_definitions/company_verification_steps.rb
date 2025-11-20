@@ -56,5 +56,9 @@ Then("I should not see {string} in the pending list") do |company_name|
 end
 
 Given("the system fails to save company verifications") do
-  allow_any_instance_of(CompanyVerification).to receive(:save).and_return(false)
+  # Use RSpec Mocks via including its syntax in Cucumber World if not already.
+  # Fallback: stub at class level.
+  CompanyVerification.class_eval do
+    def save(*_args) = false
+  end
 end

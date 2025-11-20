@@ -37,3 +37,9 @@ Feature: Referral Management
     And I am on the referral posts page
     Then I should see "Pending"
     And I should not see "Request Referral"
+
+  Scenario: User sees failure message when attempting duplicate referral request
+    Given there is a referral post for "Tech Corp"
+    And I have already requested a referral for this post
+    When I force a duplicate referral request
+    Then I should see "Failed to send request."

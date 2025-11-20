@@ -53,3 +53,11 @@ end
 Given("I am on the referral posts page") do
   visit referral_posts_path
 end
+
+When("I force a duplicate referral request") do
+  post = ReferralPost.last
+  # Direct POST to exercise controller else branch when uniqueness validation fails
+  page.driver.post referral_post_referral_requests_path(post)
+  # Follow redirect
+  visit referral_posts_path
+end
