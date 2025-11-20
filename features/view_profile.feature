@@ -22,11 +22,18 @@ Feature: View User Profile
     Given I am logged in
     When I visit the profile page for a user with ID "99999"
     Then I should see an error message "User not found"
-    And I should be redirected to the homepage
+    And I should be redirected to my profile page
 
   Scenario: Not logged-in user attempts to view a user profile
     Given I am not logged in
     When I visit the profile page of any user
-    Then I should be redirected to the login page
-    And I should see a message "You must be logged in to access that page."
+    Then I should be redirected to "/session/new"
+    And I should see an error message "You must be logged in to access this section"
+
+
+
+
+
+
+
 
