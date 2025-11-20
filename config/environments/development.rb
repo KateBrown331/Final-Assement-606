@@ -99,9 +99,9 @@ Rails.application.configure do
 
 
   # MAILTRAP_INSECURE=1 in your shell. This will only be used in development.
-  if ENV["MAILTRAP_INSECURE"].present?
-    smtp_settings[:openssl_verify_mode] = "none"
-  end
+  # if ENV["MAILTRAP_INSECURE"].present?
+  #   smtp_settings[:openssl_verify_mode] = "none"
+  # end
 
   config.action_mailer.smtp_settings = smtp_settings
 end
