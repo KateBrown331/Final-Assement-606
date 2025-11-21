@@ -1,0 +1,35 @@
+<div class="container py-5">
+  <h2 class="text-tamu-maroon fw-bold mb-4">Your Referral Requests</h2>
+
+  <% if @referral_requests.any? %>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Candidate</th>
+          <th>Post</th>
+          <th>Submitted Data</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @referral_requests.each do |req| %>
+          <tr>
+            <td><%= req.user.full_name %> (<%= req.user.email %>)</td>
+            <td><%= link_to req.referral_post.title, referral_post_path(req.referral_post) %></td>
+            <td><pre style="white-space:pre-wrap;"><%= JSON.pretty_generate(req.submitted_data || {}) rescue req.submitted_data.inspect %></pre></td>
+            <td><%= req.status.capitalize %></td>
+            <td>
+              <%= form_with url: update_referral_request_status_path(req), method: :patch, local: true do |f| %>
+                <%= f.select :status, options_for_select([['Approve', 'approved'], ['Reject', 'rejected'], ['Pending', 'pending']], selected: req.status) %>
+                <%= f.submit 'Update', class: 'btn btn-sm btn-outline-primary' %>
+              <% end %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% else %>
+    <p class="text-muted">No requests yet.</p>
+  <% end %>
+</div>
