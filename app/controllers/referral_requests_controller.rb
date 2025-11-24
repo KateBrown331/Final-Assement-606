@@ -3,6 +3,10 @@ class ReferralRequestsController < ApplicationController
   before_action :set_referral_post, only: %i[create create_from_message]
   before_action :set_referral_request, only: %i[update_status]
 
+  def new
+    @referral_request = @referral_post.referral_requests.new(user: current_user)
+  end
+
   def create
     submitted_payload = normalize_submitted_data(params[:submitted_data] || params[:referral_request]&.fetch(:submitted_data, nil))
 
@@ -15,7 +19,8 @@ class ReferralRequestsController < ApplicationController
     @referral_request = @referral_post.referral_requests.build(
       user: current_user,
       status: :pending,
-      submitted_data: submitted_payload
+      submitted_data: submitted_payload,
+      note_to_poster: params[:referral_request]&.fetch(:note_to_poster, nil)
     )
 
     if @referral_request.save
