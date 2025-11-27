@@ -36,7 +36,12 @@
               <%= link_to "Dashboard", dashboard_path, class: "tamu-navbar-link #{'active' if request.path.start_with?(dashboard_path)}" %>
             </li>
             <li>
-              <%= link_to "Your Referral Posts", referral_posts_path, class: "tamu-navbar-link #{'active' if request.path.start_with?(referral_posts_path)}" %>
+              <%= link_to "Search", referral_posts_path,
+                  class: "tamu-navbar-link #{'active' if request.path.start_with?(referral_posts_path) && request.path != new_referral_post_path}" %>
+            </li>
+            <li>
+              <%= link_to "Create a Post", new_referral_post_path,
+                  class: "tamu-navbar-link #{'active' if request.path == new_referral_post_path}" %>
             </li>
           <% else %>
             <li class="tamu-navbar-link">

@@ -24,6 +24,15 @@ class ReferralPost < ApplicationRecord
   # instead of `ReferralPost.where(status: :active).order(created_at: :desc)`
   scope :active_posts, -> { where(status: :active).order(created_at: :desc) }
 
+  scope :search, ->(query) {
+    q = "%#{query.downcase}%"
+    where(
+      "LOWER(company_name) LIKE ? OR LOWER(title) LIKE ? OR LOWER(job_title) LIKE ? OR LOWER(department) LIKE ? OR LOWER(location) LIKE ?",
+      q, q, q, q, q
+    )
+  }
+
+
   # Ensure questions is always an array (guards in case DB nulls sneak in)
   def questions
     (super || []).map(&:to_s)

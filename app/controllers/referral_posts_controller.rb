@@ -6,6 +6,8 @@ class ReferralPostsController < ApplicationController
 
   def index
     @referral_posts = ReferralPost.active_posts
+    @referral_posts = @referral_posts.search(params[:q]) if params[:q].present?
+    @referral_posts = @referral_posts.order(created_at: :desc).page(params[:page]).per(5)
   end
 
   def new

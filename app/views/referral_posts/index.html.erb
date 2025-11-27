@@ -1,8 +1,16 @@
 <div class="container py-5">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="text-tamu-maroon fw-bold">Your Referral Posts</h2>
-    <%= link_to "New Referral Post", new_referral_post_path, class: "tamu-btn tamu-btn-maroon text-decoration-none" %>
+    <h2 class="text-tamu-maroon fw-bold">Search Referral Posts</h2>
+    <%= link_to "Create Referral Post", new_referral_post_path, class: "tamu-btn tamu-btn-maroon text-decoration-none" %>
   </div>
+
+  <!-- Search Bar -->
+  <%= form_with url: referral_posts_path, method: :get, local: true, class: "mb-4" do %>
+    <div class="input-group">
+      <%= text_field_tag :q, params[:q], placeholder: "Search by company, title, job title…", class: "form-control" %>
+      <button class="btn btn-outline-maroon" type="submit">Search</button>
+    </div>
+  <% end %>
 
   <% @referral_posts.each do |post| %>
     <div class="card shadow-sm mb-3">
@@ -20,4 +28,8 @@
       </div>
     </div>
   <% end %>
+
+  <div class="d-flex justify-content-center mt-4">
+    <%= paginate @referral_posts %>
+  </div>
 </div>
