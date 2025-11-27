@@ -6,6 +6,15 @@ class ReferralPostsController < ApplicationController
 
   def index
     @referral_posts = ReferralPost.active_posts
+
+    if params[:mine] == "true"
+      # Only current user's own posts
+      @referral_posts = @referral_posts.where(user_id: current_user.id)
+    else
+      # Exclude current user's posts
+      @referral_posts = @referral_posts.where.not(user_id: current_user.id)
+    end
+
     @referral_posts = @referral_posts.search(params[:q]) if params[:q].present?
     @referral_posts = @referral_posts.order(created_at: :desc).page(params[:page]).per(5)
   end

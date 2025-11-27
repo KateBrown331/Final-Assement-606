@@ -12,6 +12,17 @@
     </div>
   <% end %>
 
+  <div class="btn-group mb-3" role="group">
+    <%= link_to "All Posts",
+        referral_posts_path(q: params[:q], mine: "false"),
+        class: "btn btn-outline-primary", style: "#{params[:mine] == 'false' ? 'background-color: #500000 !important; color: #FFFFFF !important;' : 'background-color: #FFFFFF !important; color: #500000 !important;'} border-color: #500000 !important;" %>
+
+    <%= link_to "My Posts",
+        referral_posts_path(q: params[:q], mine: "true"),
+        class: "btn btn-outline-primary", style: "#{params[:mine] == 'true' ? 'background-color: #500000 !important; color: #FFFFFF !important;' : 'background-color: #FFFFFF !important; color: #500000 !important;'} border-color: #500000 !important;" %>
+  </div>
+
+  
   <% @referral_posts.each do |post| %>
     <div class="card shadow-sm mb-3">
       <div class="card-body">
