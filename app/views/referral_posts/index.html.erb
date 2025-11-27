@@ -15,7 +15,7 @@
   <div class="btn-group mb-3" role="group">
     <%= link_to "All Posts",
         referral_posts_path(q: params[:q], mine: "false"),
-        class: "btn btn-outline-primary", style: "#{params[:mine] == 'false' ? 'background-color: #500000 !important; color: #FFFFFF !important;' : 'background-color: #FFFFFF !important; color: #500000 !important;'} border-color: #500000 !important;" %>
+        class: "btn btn-outline-primary", style: "#{(params[:mine] == 'false' || params[:mine].blank?) ? 'background-color: #500000 !important; color: #FFFFFF !important;' : 'background-color: #FFFFFF !important; color: #500000 !important;'} border-color: #500000 !important;" %>
 
     <%= link_to "My Posts",
         referral_posts_path(q: params[:q], mine: "true"),
