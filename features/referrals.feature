@@ -35,6 +35,7 @@ Scenario: User requests a referral successfully
     Given there is a referral post for "Tech Corp"
     And I have already requested a referral for this post
     And I am on the referral posts page
+    When I click "My Posts"
     Then I should see "Pending"
     And I should not see "Request Referral"
 
