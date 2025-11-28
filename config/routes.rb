@@ -56,13 +56,13 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root to: redirect("/users/new")
 
-  resources :referral_posts do
-    resources :referral_requests, only: [ :create ] do
-      collection do
-        post "from_message", to: "referral_requests#create_from_message"
-      end
-    end
-  end
+  # resources :referral_posts do
+  #   resources :referral_requests, only: [ :create ] do
+  #     collection do
+  #       post "from_message", to: "referral_requests#create_from_message"
+  #     end
+  #   end
+  # end
 
   # route to update request status (used by post owner)
   patch "referral_requests/:id/status", to: "referral_requests#update_status", as: "update_referral_request_status"
