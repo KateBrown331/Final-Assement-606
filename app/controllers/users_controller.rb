@@ -106,7 +106,7 @@ class UsersController < ApplicationController
     @index = params[:index].to_i
 
     @user.experiences_data.delete_at(@index)
-    if @user.save 
+    if @user.save
       redirect_to user_path(@user), notice: "Experience entry deleted."
     else
       redirect_to user_path(@user), alert: "Failed to delete experience entry."
@@ -172,7 +172,7 @@ class UsersController < ApplicationController
     @index = params[:index].to_i
 
     @user.educations_data.delete_at(@index)
-    if @user.save 
+    if @user.save
       redirect_to user_path(@user), notice: "Education entry deleted."
     else
       redirect_to user_path(@user), alert: "Failed to delete education entry."

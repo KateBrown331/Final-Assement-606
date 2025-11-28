@@ -32,7 +32,7 @@
           <% else %>
             <div class="d-flex justify-content-center">
               <%= button_to "Request Referral",
-                    referral_post_referral_requests_from_message_path(@referral_post),
+                    referral_post_referral_requests_path(@referral_post),
                     method: :post,
                     params: { submitted_data: {} },
                     class: "tamu-btn tamu-btn-maroon" %>

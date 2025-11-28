@@ -15,4 +15,3 @@ end
 Given("saving the user should fail") do
   allow_any_instance_of(User).to receive(:save).and_return(false)
 end
-

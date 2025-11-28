@@ -41,15 +41,14 @@ class ReferralPost < ApplicationRecord
     value = super
     return [] if value.nil?
 
-    value.is_a?(Array) ? value : [value]  # Convert a string into a 1-element array
+    value.is_a?(Array) ? value : [ value ]  # Convert a string into a 1-element array
   end
 
   before_save :normalize_questions
 
   def normalize_questions
     self.questions = Array(questions).map do |q|
-      q.is_a?(Array) ? q.compact.first : q
+      q.is_a?(Array) ? q.compact.first.to_s : q.to_s
     end.compact
   end
-
 end
