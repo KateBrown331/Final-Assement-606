@@ -36,7 +36,8 @@
                       <%= link_to req.referral_post.title, referral_post_path(req.referral_post) %>
                     </td>
                     <td style="max-width: 320px;">
-                      <pre style="white-space:pre-wrap; margin:0;"><%= JSON.pretty_generate(req.submitted_data || {}) rescue req.submitted_data.inspect %></pre>
+                      <%# <pre style="white-space:pre-wrap; margin:0;"><%= JSON.pretty_generate(req.submitted_data || {}) rescue req.submitted_data.inspect %></pre>
+                      <%= link_to "See Full Submission", referral_post_referral_request_path(req.referral_post, req) %>
                     </td>
                     <td><%= req.status.capitalize %></td>
                     <td class="text-end">
