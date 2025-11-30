@@ -2,8 +2,8 @@
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-tamu-maroon fw-bold">Dashboard</h2>
     <div>
-      <%= link_to "Create Referral Post", new_referral_post_path, class: "tamu-btn tamu-btn-maroon me-2" %>
-      <%= link_to "Conversations", conversations_path, class: "tamu-btn btn-outline-secondary" %>
+      <%= link_to "Create Referral Post", new_referral_post_path, class: "tamu-btn tamu-btn-maroon me-2 btn btn-primary" %>
+      <%= link_to "Conversations", conversations_path, class: "tamu-btn btn-outline-secondary btn btn-outline-secondary" %>
     </div>
   </div>
 
@@ -121,4 +121,125 @@
       </div>
     </div>
   </div>
-</div>
+
+  <hr class="my-5">
+
+  <div class="d-flex justify-content-between align-items-end mb-3">
+    <h3 class="fw-bold">Browse Referrals</h3>
+    <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#filterCollapse" aria-expanded="false" aria-controls="filterCollapse">
+      Toggle Filters <i class="bi bi-funnel"></i>
+    </button>
+  </div>
+
+  <div class="card bg-light mb-4 border-0 collapse show" id="filterCollapse">
+    <div class="card-body">
+      <%= form_with url: dashboard_path, method: :get, local: true, class: "row g-3" do |f| %>
+        
+        <div class="col-md-3">
+          <%= f.label :company_name, "Company", class: "form-label small text-muted" %>
+          <%= f.text_field :company_name, value: @selected_company, class: "form-control form-control-sm", placeholder: "e.g. Google" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :job_title, "Job Title", class: "form-label small text-muted" %>
+          <%= f.text_field :job_title, value: @selected_job_title, class: "form-control form-control-sm", placeholder: "e.g. Software Engineer" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :department, "Department", class: "form-label small text-muted" %>
+          <%= f.text_field :department, value: @selected_department, class: "form-control form-control-sm", placeholder: "e.g. Engineering" %>
+        </div>
+        <div class="col-md-3">
+          <%= f.label :username, "Referrer Username", class: "form-label small text-muted" %>
+          <%= f.text_field :username, value: @selected_user, class: "form-control form-control-sm", placeholder: "Search by user" %>
+        </div>
+
+        <div class="col-md-2">
+          <%= f.label :location, "Location", class: "form-label small text-muted" %>
+          <%= f.select :location, options_for_select(@location_options, @selected_location), { include_blank: "Any" }, { class: "form-select form-select-sm" } %>
+        </div>
+        <div class="col-md-2">
+          <%= f.label :job_level, "Level", class: "form-label small text-muted" %>
+          <%= f.select :job_level, options_for_select(@job_level_options, @selected_job_level), { include_blank: "Any" }, { class: "form-select form-select-sm" } %>
+        </div>
+        <div class="col-md-2">
+          <%= f.label :employment_type, "Type", class: "form-label small text-muted" %>
+          <%= f.select :employment_type, options_for_select(@employment_type_options, @selected_employment_type), { include_blank: "Any" }, { class: "form-select form-select-sm" } %>
+        </div>
+        <div class="col-md-2">
+          <%= f.label :created_since, "Posted", class: "form-label small text-muted" %>
+          <%= f.select :created_since, options_for_select(@date_ranges, @selected_created_since), { include_blank: "Any time" }, { class: "form-select form-select-sm" } %>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end gap-2">
+          <%= f.submit "Apply Filters", class: "btn btn-sm btn-primary w-100" %>
+          <%= link_to "Clear", dashboard_path, class: "btn btn-sm btn-outline-secondary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% if @all_referrals.any? %>
+      <% @all_referrals.each do |post| %>
+        <div class="col">
+          <div class="card h-100 shadow-sm hover-shadow transition-card">
+            <div class="card-header bg-white border-bottom-0 pt-3 d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="card-title mb-0 text-truncate" style="max-width: 200px;" title="<%= post.company_name %>">
+                  <%= post.company_name %>
+                </h5>
+                <small class="text-muted">
+                  <i class="bi bi-person-circle"></i> <%= post.user.try(:full_name) || post.user.username %>
+                </small>
+              </div>
+              <% if post.location.present? %>
+                <span class="badge bg-light text-dark border"><%= post.location %></span>
+              <% end %>
+            </div>
+
+            <div class="card-body pt-2">
+              <h6 class="card-subtitle mb-2 text-primary fw-bold"><%= post.title %></h6>
+              
+              <div class="mb-3">
+                <% if post.job_level.present? %>
+                  <span class="badge bg-info bg-opacity-10 text-info border border-info" style="font-size: 0.7rem;"><%= post.job_level %></span>
+                <% end %>
+                <% if post.employment_type.present? %>
+                  <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary" style="font-size: 0.7rem;"><%= post.employment_type %></span>
+                <% end %>
+              </div>
+
+              <p class="card-text small text-muted">
+                <%= truncate(post.description, length: 100) %>
+              </p>
+            </div>
+
+            <div class="card-footer bg-white border-top-0 pb-3">
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted" style="font-size: 0.75rem;">
+                  Posted <%= time_ago_in_words(post.created_at) %> ago
+                </small>
+                <%= link_to "View & Request", referral_post_path(post), class: "btn btn-sm btn-outline-primary stretched-link" %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="col-12 text-center py-5">
+        <h4 class="text-muted">No referrals found matching your criteria.</h4>
+        <%= link_to "Clear Filters", dashboard_path, class: "btn btn-link" %>
+      </div>
+    <% end %>
+  </div>
+  
+  </div>
+
+<style>
+  .hover-shadow:hover {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    transform: translateY(-2px);
+  }
+  .transition-card {
+    transition: all 0.3s ease;
+  }
+</style>
