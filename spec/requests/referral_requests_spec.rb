@@ -105,6 +105,146 @@ RSpec.describe "ReferralRequests", type: :request do
     end
   end
 
+  describe "PATCH /referral_posts/:referral_post_id/referral_requests/:id" do
+    let!(:referral_request) do
+      referral_post.referral_requests.create!(
+        user: requester,
+        status: :pending,
+        submitted_data: { "answer" => "original answer" }
+      )
+    end
+
+    it "updates a request successfully with hash submitted_data" do
+      new_data = { "answer1" => "Updated answer 1", "answer2" => "Updated answer 2" }
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: new_data
+      }
+
+      expect(response).to redirect_to(referral_post_path(referral_post))
+      follow_redirect!
+      expect(flash[:notice]).to eq("Edit saved!")
+
+      referral_request.reload
+      expect(referral_request.submitted_data["answer1"]).to eq("Updated answer 1")
+      expect(referral_request.submitted_data["answer2"]).to eq("Updated answer 2")
+    end
+
+    it "updates a request successfully with JSON string submitted_data" do
+      json_data = JSON.generate({ "q1" => "updated answer 1", "q2" => "updated answer 2" })
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: json_data
+      }
+
+      expect(response).to redirect_to(referral_post_path(referral_post))
+      follow_redirect!
+      expect(flash[:notice]).to eq("Edit saved!")
+
+      referral_request.reload
+      expect(referral_request.submitted_data).to be_a(Hash)
+      expect(referral_request.submitted_data["q1"]).to eq("updated answer 1")
+      expect(referral_request.submitted_data["q2"]).to eq("updated answer 2")
+    end
+
+    it "updates a request successfully with nested params format" do
+      new_data = { "question1" => "updated answer 1" }
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        referral_request: {
+          submitted_data: new_data
+        }
+      }
+
+      expect(response).to redirect_to(referral_post_path(referral_post))
+      follow_redirect!
+      expect(flash[:notice]).to eq("Edit saved!")
+
+      referral_request.reload
+      expect(referral_request.submitted_data["question1"]).to eq("updated answer 1")
+    end
+
+    it "prevents updating requests on closed posts" do
+      referral_post.update!(status: :closed)
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: { "answer" => "new answer" }
+      }
+
+      expect(response).to redirect_to(referral_post_path(referral_post))
+      follow_redirect!
+      expect(flash[:alert]).to eq("This post is closed and no longer accepting requests.")
+
+      referral_request.reload
+      expect(referral_request.submitted_data["answer"]).to eq("original answer")
+    end
+
+    it "normalizes array as answers when updating" do
+      array_data = JSON.generate(["answer1", "answer2"])
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: array_data
+      }
+
+      referral_request.reload
+      expect(referral_request.submitted_data["answers"]).to be_present
+    end
+
+    it "normalizes invalid JSON string as answer when updating" do
+      invalid_json = "not valid json but still a string"
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: invalid_json
+      }
+
+      referral_request.reload
+      expect(referral_request.submitted_data).to be_a(Hash)
+      expect(referral_request.submitted_data["answer"]).to eq(invalid_json)
+    end
+
+    it "handles nil submitted_data by setting empty hash" do
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {}
+
+      referral_request.reload
+      expect(referral_request.submitted_data).to eq({})
+    end
+
+    it "normalizes ActionController::Parameters when updating" do
+      params_data = { "key" => "value" }
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: params_data
+      }
+
+      referral_request.reload
+      expect(referral_request.submitted_data["key"]).to eq("value")
+    end
+
+    it "handles numeric string values when updating" do
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: "12345"
+      }
+
+      referral_request.reload
+      expect(referral_request.submitted_data).to be_a(Hash)
+      # "12345" parses as JSON number, so it gets wrapped in answers key
+      expect(referral_request.submitted_data["answers"]).to eq(12345)
+    end
+
+    it "allows requester to update their own request" do
+      # Already logged in as requester from before block
+      new_data = { "updated" => "data" }
+
+      patch referral_post_referral_request_path(referral_post, referral_request), params: {
+        submitted_data: new_data
+      }
+
+      expect(response).to redirect_to(referral_post_path(referral_post))
+      referral_request.reload
+      expect(referral_request.submitted_data["updated"]).to eq("data")
+    end
+  end
+
   describe "PATCH /referral_requests/:id/status" do
     let!(:referral_request) do
       referral_post.referral_requests.create!(

@@ -41,17 +41,12 @@ class ReferralRequestsController < ApplicationController
       redirect_to referral_post_path(@referral_post) and return
     end
 
-    puts "DEBUG hitting update here"
-
     submitted_payload = normalize_submitted_data(params[:submitted_data] || params[:referral_request]&.fetch(:submitted_data, nil))
 
     @referral_request.update!(submitted_data: submitted_payload)
 
     if @referral_request.save
       redirect_to referral_post_path(@referral_post), notice: "Edit saved!"
-    else
-      flash[:alert] = "Failed to save edit."
-      redirect_to referral_post_path(@referral_post)
     end
   end
 
