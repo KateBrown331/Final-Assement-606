@@ -180,7 +180,7 @@ RSpec.describe "ReferralRequests", type: :request do
     end
 
     it "normalizes array as answers when updating" do
-      array_data = JSON.generate(["answer1", "answer2"])
+      array_data = JSON.generate([ "answer1", "answer2" ])
 
       patch referral_post_referral_request_path(referral_post, referral_request), params: {
         submitted_data: array_data
