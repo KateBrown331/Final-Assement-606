@@ -1,7 +1,7 @@
 class ReferralRequestsController < ApplicationController
   before_action :require_login
-  before_action :set_referral_post, only: %i[show create create_from_message]
-  before_action :set_referral_request, only: %i[show update_status]
+  before_action :set_referral_post, only: %i[show create update create_from_message]
+  before_action :set_referral_request, only: %i[show update update_status]
 
   # def new
   #   @referral_request = @referral_post.referral_requests.new(user: current_user)
@@ -31,6 +31,22 @@ class ReferralRequestsController < ApplicationController
     else
       flash[:alert] = "Failed to send request."
       redirect_to referral_post_path(@referral_post)
+    end
+  end
+
+  def update
+    # Prevent applying to closed posts
+    if @referral_post.closed?
+      flash[:alert] = "This post is closed and no longer accepting requests."
+      redirect_to referral_post_path(@referral_post) and return
+    end
+
+    submitted_payload = normalize_submitted_data(params[:submitted_data] || params[:referral_request]&.fetch(:submitted_data, nil))
+
+    @referral_request.update!(submitted_data: submitted_payload)
+
+    if @referral_request.save
+      redirect_to referral_post_path(@referral_post), notice: "Edit saved!"
     end
   end
 
