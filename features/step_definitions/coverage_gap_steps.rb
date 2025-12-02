@@ -25,12 +25,12 @@ When('I visit the verification link with token {string}') do |token|
 end
 
 Given('I have an experience entry') do
-  @user.experiences_data = [{ "title" => "Dev", "company" => "Test", "start_date" => "2020-01-01", "end_date" => "2021-01-01", "description" => "Desc" }]
+  @user.experiences_data = [ { "title" => "Dev", "company" => "Test", "start_date" => "2020-01-01", "end_date" => "2021-01-01", "description" => "Desc" } ]
   @user.save!
 end
 
 Given('I have an education entry') do
-  @user.educations_data = [{ "degree" => "BS", "school" => "TAMU", "start_date" => "2020-01-01", "end_date" => "2024-01-01", "description" => "Desc" }]
+  @user.educations_data = [ { "degree" => "BS", "school" => "TAMU", "start_date" => "2020-01-01", "end_date" => "2024-01-01", "description" => "Desc" } ]
   @user.save!
 end
 
@@ -40,7 +40,7 @@ end
 
 When('I delete the experience entry') do
   visit edit_user_path(@user)
-  # Assuming there's a delete button/link for the experience. 
+  # Assuming there's a delete button/link for the experience.
   # We might need to be more specific if there are multiple.
   # Based on views, it's a button_to "Delete"
   within("#experience-section") do
@@ -74,7 +74,7 @@ end
 When('I click "Delete" for the post {string}') do |title|
   visit referral_posts_path(mine: "true")
 
-  
+
   # Find the card containing the title
   card = find('.card', text: title)
   within(card) do
@@ -178,7 +178,7 @@ Given('I submit a referral request with array data') do
   # Manually post to create request with array submitted_data
   # This will be parsed as { "submitted_data" => ["one", "two"] }
   page.driver.post referral_post_referral_requests_path(@post), {
-    submitted_data: ["one", "two"]
+    submitted_data: [ "one", "two" ]
   }
   # Follow redirect
   visit referral_post_path(@post)
