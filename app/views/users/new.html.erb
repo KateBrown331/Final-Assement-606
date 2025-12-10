@@ -1,9 +1,19 @@
 <div class="min-vh-100 d-flex align-items-center justify-content-center py-5" style="background-color: #f6f6f6;">
   <div class="w-100" style="max-width: 500px;">
     <div class="card shadow-lg rounded-3">
+    <div class="card-body p-4">
+    <p>FINAL ASSESSMENT ADDTION: There are currently <%=User.count%> users, <%=ReferralPost.count%> referral posts, and <%=Conversation.count%> conversations in the database.</p>
+    </div>
+    </div>
+    <br>
+
+    <div class="card shadow-lg rounded-3">
+
+      
       <div class="card-body p-4">
         <h1 class="card-title text-center mb-4" style="color: #500000;">Sign Up</h1>
 
+        
         <%= form_with model: @user, local: true, data: { turbo: false } do |f| %>
           
           <div class="mb-3">
